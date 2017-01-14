@@ -38,6 +38,14 @@ class BlogModel():
         sql = 'update blog set is_del=1 where text_id="%s"' % text_id
         self.db.un_query(sql)
 
+    def update(self, text_id, bag):
+        title = bag.get('title')
+        description = bag.get('description')
+        content = bag.get('content')
+        content = json.dumps(content, encoding="UTF-8", ensure_ascii=False)
+        sql = 'update `blog` set `title`="%s", `description`="%s", `content`=%s where text_id="%s"' % (title, description, content, text_id)
+        self.db.un_query(sql)
+
 if __name__ =='__main__':
     res = BlogModel().get_one('text_a062069282b6436ea7bf0371115969e6')
     print res

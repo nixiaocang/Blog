@@ -15,9 +15,13 @@ class SaveHandler(BaseHandler):
             ('description', str, None),
             ('content', str, None),
         ])
+        text_id = self.get_argument('text_id', None)
         content = args['content']
         content=unquote(content)
         args['content'] = content
-        BlogModel().insert(args)
+        if text_id is None:
+            BlogModel().insert(args)
+        else:
+            BlogModel().update(text_id, args)
         self.result = args
         return True
