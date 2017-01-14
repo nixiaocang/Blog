@@ -109,7 +109,7 @@
             };
             console.log(data);
             $http({method: 'POST', url: '/api/save', params: data}).success(function (response) {
-                var res = response.result;
+                window.location.href="one.html"; 
             });
         };
     });
