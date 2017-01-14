@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>Classic - Responsive Bootstrap 4.0 Template</title>
+    <script src="//code.jquery.com/jquery-1.11.3.min.js"></script>
+    <script src="https://cdn.static.runoob.com/libs/angular.js/1.4.6/angular.min.js"></script>
+
+    <!-- include libraries BS3 -->
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.1/css/bootstrap.min.css"/>
+    <script type="text/javascript" src="//netdna.bootstrapcdn.com/bootstrap/3.0.1/js/bootstrap.min.js"></script>
+
+    <!-- include summernote -->
+    <link rel="stylesheet" href="./dist/summernote.css">
+    <script type="text/javascript" src="./dist/summernote.js"></script>
+
+    <script type="text/javascript">
+        $(function () {
+            $('.summernote').summernote({
+                height: 200
+            });
+
+
+        });
+    </script>
+</head>
+<body>
+<div class="container" ng-app="myApp" ng-controller="myCtrl">
+    <div class="form">
+        <h2>Post Now</h2>
+        <div>
+            <div>
+                <label for="title">Title</label>
+                <input type="text" class="text" id="title" name="title" value="" ng-model="title">
+            </div>
+            <div>
+                <label for="description">Slug</label>
+                <input type="text" class="description" id="description" name="description" value=""
+                       ng-model="description">
+            </div>
+            <div>
+                <div class="form-group">
+                    <label for="contents">Contents</label>
+                    <textarea name="text" class="summernote" id="contents" title="Contents"
+                              ng-model="content"></textarea>
+                </div>
+                <button type="submit" class="btn btn-default" ng-click="save()">submit</button>
+            </div>
+
+        </div>
+    </div>
+
+</div>
+<script type="text/javascript">
+    var app = angular.module('myApp', []);
+    app.controller('myCtrl', function ($scope, $http) {
+        $scope.save = function () {
+            var data = {
+                title: $scope.title,
+                description: $scope.description,
+                content: $('.summernote').val(),
+
+            };
+
+            $http({method: 'POST', url: '/api/save', params: data}).success(function (response) {
+                console.log(response);
+            });
+        };
+    });
+</script>
+</body>
+</html>
