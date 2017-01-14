@@ -18,7 +18,7 @@
 
     </style>
 </head>
-<body ng-app="myApp" ng-controller="myCtrl" ng-model="res">
+<body ng-app="myApp" ng-controller="myCtrl">
 
 <div class="tm-header">
     <div class="container-fluid">
@@ -42,9 +42,11 @@
                             <a href="two.html" class="nav-link">Add</a>
                         </li>
                         <li class="nav-item">
-                            <a href="three.html active" class="nav-link">Blog</a>
+                            <a href="three.html" class="nav-link">Blog</a>
                         </li>
-
+                        <li class="nav-item active">
+                            <a href="contact.html" class="nav-link" ng-model="rtitle">{{rtitle}}</a>
+                        </li>
                     </ul>
                 </div>
 
@@ -54,16 +56,9 @@
     </div>
 </div>
 <div>
-    <div ng-repeat="x in res">
-        <h4 class="tm-margin-b-20 tm-gold-text">{{x.title}}</h4>
-        <p>{{x.description}}</p>
-        <a href="four.html?text_id={{x.text_id}}" class="tm-btn text-uppercase">Detail</a>
-
-    </div>
-
+      <h2 ng-model="title">{{title}}</h2>
+    <p ng-model="description">{{description}}</p>
     <div id="textarea">
-        <p ng-model="title">{{title}}</p>
-        <p ng-model="description">{{description}}</p>
     </div>
 
 
@@ -75,13 +70,24 @@
 <script src="js/bootstrap.min.js"></script>
 <script type="text/javascript">
     var app = angular.module('myApp', []);
+
     app.controller('myCtrl', function ($scope, $http) {
-        $http.get('/api/list?user_id=jiaogf').success(function (response) {
-            $scope.res = response.result;
+
+        var url = location.search;
+        var text_id = url.split("=")[1]
+        console.log(text_id);
+
+        $http({method: 'POST', url: '/api/gettext', params: {text_id: text_id}}).success(function (response) {
+
+            var res = response.result;
+            $scope.rtitle = res.title;
+            $scope.title = res.title;
+            $scope.description = res.description;
+            var d = document.getElementById('textarea');//通过id获取div节点对象
+            d.innerHTML = d.innerHTML + res.content;
+
         });
-       $scope.get_text = function (text_id) {
-           window.location.href='four.html?text_id='+ text_id;
-        };
+
     });
 </script>
 

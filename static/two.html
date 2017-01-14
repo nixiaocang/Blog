@@ -12,24 +12,57 @@
     <!-- include libraries BS3 -->
     <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.1/css/bootstrap.min.css"/>
     <script type="text/javascript" src="//netdna.bootstrapcdn.com/bootstrap/3.0.1/js/bootstrap.min.js"></script>
-
+    <script src="http://apps.bdimg.com/libs/angular.js/1.5.0-beta.0/angular-sanitize.min.js"></script>
     <!-- include summernote -->
     <link rel="stylesheet" href="./dist/summernote.css">
     <script type="text/javascript" src="./dist/summernote.js"></script>
 
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/templatemo-style.css">
+
+
     <script type="text/javascript">
-        $(function () {
-            $('.summernote').summernote({
-                height: 200
-            });
 
-
-        });
     </script>
 </head>
 <body>
+
+<div class="tm-header">
+    <div class="container-fluid">
+        <div class="tm-header-inner">
+            <a href="#" class="navbar-brand tm-site-name">逆小苍</a>
+
+            <!-- navbar -->
+            <nav class="navbar tm-main-nav">
+
+                <button class="navbar-toggler hidden-md-up" type="button" data-toggle="collapse"
+                        data-target="#tmNavbar">
+                    &#9776;
+                </button>
+
+                <div class="collapse navbar-toggleable-sm" id="tmNavbar">
+                    <ul class="nav navbar-nav">
+                        <li class="nav-item">
+                            <a href="one.html" class="nav-link">Home</a>
+                        </li>
+                        <li class="nav-item active">
+                            <a href="two.html" class="nav-link">Add</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="three.html" class="nav-link">Blog</a>
+                        </li>
+
+                    </ul>
+                </div>
+
+            </nav>
+
+        </div>
+    </div>
+</div>
 <div class="container" ng-app="myApp" ng-controller="myCtrl">
-    <div class="form">
+
+    <div class="">
         <h2>Post Now</h2>
         <div>
             <div>
@@ -47,7 +80,7 @@
                     <textarea name="text" class="summernote" id="contents" title="Contents"
                               ng-model="content"></textarea>
                 </div>
-                <button type="submit" class="btn btn-default" ng-click="save()">submit</button>
+                <button type="submit" class="btn btn-success" ng-click="save()">submit</button>
             </div>
 
         </div>
@@ -55,18 +88,28 @@
 
 </div>
 <script type="text/javascript">
+    $(function () {
+            $('.summernote').summernote({
+                height: 200
+            });
+
+
+        });
     var app = angular.module('myApp', []);
     app.controller('myCtrl', function ($scope, $http) {
         $scope.save = function () {
+            var code = $('.summernote').summernote('code');
+            console.log(code);
+            code = encodeURIComponent(code);
             var data = {
                 title: $scope.title,
                 description: $scope.description,
-                content: $('.summernote').val(),
+                content: code,
 
             };
-
+            console.log(data);
             $http({method: 'POST', url: '/api/save', params: data}).success(function (response) {
-                console.log(response);
+                var res = response.result;
             });
         };
     });

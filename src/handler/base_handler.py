@@ -45,6 +45,11 @@ class BaseHandler(RequestHandler):
                 'result': self.result,
             }
             self.write(json.dumps(data))
+        elif self.datatype == "img":
+            #self.set_header("Content-type", "image/png")
+            self.set_header ('Content-Type', 'application/octet-stream')
+            self.set_header("Content-Disposition","attachment; filename=jgf.png")
+            self.write(self.result)
         else:
             self.write(self.result)
 
@@ -53,12 +58,12 @@ class BaseHandler(RequestHandler):
         try:
             self.do_action()
         except IllegalArgumentException, ie:
-            self.send_error(self.error_code.MISSING_ARGUMENT, ie.message)
+            self.set_error(self.error_code.MISSING_ARGUMENT, ie.message)
             print_stack()
         except Exception, e:
+            print_stack()
             self.set_error(self.error_code.UNKNOW_ERROR, e.message)
             self.ext_log_data.append(e.message)
-            print_stack()
 
     def prepare(self):
         self.request_start_time = time.time()

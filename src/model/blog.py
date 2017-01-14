@@ -3,6 +3,7 @@
 
 from lib.db_helper import Blog
 import json
+from util.tools import uniq_id
 
 
 class BlogModel():
@@ -24,6 +25,16 @@ class BlogModel():
         res = self.db.query(sql)
         return res
 
+    def insert(self, bag):
+        text_id = uniq_id('text')
+        title = bag.get('title')
+        description = bag.get('description')
+        content = bag.get('content')
+        content = json.dumps(content)
+        sql = 'INSERT INTO `blog` (`user_id`, `text_id`, `title`, `description`, `content`, `is_del`) VALUES ("jiaogf", "%s", "%s", "%s", %s, 0)' % (text_id, title, description, content)
+        print sql
+        self.db.un_query(sql)
+
 if __name__ =='__main__':
-    res = BlogModel().get("jiaogf123")
+    res = BlogModel().get_one('text_a062069282b6436ea7bf0371115969e6')
     print res

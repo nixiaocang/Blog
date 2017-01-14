@@ -18,6 +18,6 @@ class SaveHandler(BaseHandler):
         content = args['content']
         content=unquote(content)
         args['content'] = content
-        print args
+        BlogModel().insert(args)
         self.result = args
         return True
