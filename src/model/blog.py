@@ -30,9 +30,12 @@ class BlogModel():
         title = bag.get('title')
         description = bag.get('description')
         content = bag.get('content')
-        content = json.dumps(content)
+        content = json.dumps(content, encoding="UTF-8", ensure_ascii=False)
         sql = 'INSERT INTO `blog` (`user_id`, `text_id`, `title`, `description`, `content`, `is_del`) VALUES ("jiaogf", "%s", "%s", "%s", %s, 0)' % (text_id, title, description, content)
-        print sql
+        self.db.un_query(sql)
+
+    def delete(self, text_id):
+        sql = 'update blog set is_del=1 where text_id="%s"' % text_id
         self.db.un_query(sql)
 
 if __name__ =='__main__':

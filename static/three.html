@@ -44,7 +44,6 @@
                         <li class="nav-item">
                             <a href="three.html active" class="nav-link">Blog</a>
                         </li>
-
                     </ul>
                 </div>
 
@@ -58,6 +57,7 @@
         <h4 class="tm-margin-b-20 tm-gold-text">{{x.title}}</h4>
         <p>{{x.description}}</p>
         <a href="four.html?text_id={{x.text_id}}" class="tm-btn text-uppercase">Detail</a>
+        <button class="tm-btn text-uppercase" ng-click="del(x.text_id)">Delete</button>
 
     </div>
 
@@ -79,8 +79,17 @@
         $http.get('/api/list?user_id=jiaogf').success(function (response) {
             $scope.res = response.result;
         });
-       $scope.get_text = function (text_id) {
-           window.location.href='four.html?text_id='+ text_id;
+        $scope.get_text = function (text_id) {
+            window.location.href = 'four.html?text_id=' + text_id;
+        };
+        $scope.del = function (text_id) {
+            $http.get('/api/delete?text_id=' + text_id).success(function (response) {
+
+                $http.get('/api/list?user_id=jiaogf').success(function (response) {
+                    $scope.res = response.result;
+                });
+            });
+            //window.location.href='three.html';
         };
     });
 </script>
